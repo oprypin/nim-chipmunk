@@ -1,0 +1,13 @@
+*
+!.gitignore
+
+!README*
+!*.md
+!LICENSE
+!/*.nimble
+!/*.nim
+!/generate
+!/generate/*.py
+!/generate/*.sh
+!/examples
+!/examples/*.nim
