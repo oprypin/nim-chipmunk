@@ -1,32 +1,3 @@
-
-{.deadCodeElim: on.}
-{.warning[SmallLshouldNotBeUsed]: off.}
-
-when defined chipmunkNoDestructors:
-  {.pragma: destroy.}
-  {.hint: "Chipmunk: no destructors; call destroy() manually, beware of memory leaks!".}
-else:
-  {.experimental.}
-  {.pragma: destroy, override.}
-
-{.passL: "-lpthread".}
-when defined(windows):
-  const lib = "chipmunk.dll"
-elif defined(mac):
-  const lib = "libchipmunk.dylib"
-else:
-  const lib = "libchipmunk.so"
-
-
-import math
-
-proc `div`(x, y: cdouble): cdouble = x / y
-
-converter toBool[T](x: ptr T): bool = x != nil
-
-
-{.push dynlib: lib.}
-
 type
   Float* = cdouble
 
@@ -875,9 +846,9 @@ proc newSweep1D*(bbfunc: SpatialIndexBBFunc; staticIndex: SpatialIndex): Sweep1D
 ## Destroy and free a spatial index.
 
 proc destroy*(index: SpatialIndex) {.destroy, cdecl, importc: "cpSpatialIndexFree".}
+proc destroy*(index: Sweep1D) {.destroy, cdecl, importc: "cpSpatialIndexFree".}
 proc destroy*(index: SpaceHash) {.destroy, cdecl, importc: "cpSpatialIndexFree".}
 proc destroy*(index: BBTree) {.destroy, cdecl, importc: "cpSpatialIndexFree".}
-proc destroy*(index: Sweep1D) {.destroy, cdecl, importc: "cpSpatialIndexFree".}
 ## Collide the objects in @c dynamicIndex against the objects in @c staticIndex using the query callback function.
 
 proc collideStatic*(dynamicIndex: SpatialIndex; staticIndex: SpatialIndex; `func`: SpatialIndexQueryFunc; data: pointer) {.cdecl, importc: "cpSpatialIndexCollideStatic".}
@@ -1241,9 +1212,9 @@ proc finalize*(shape: Shape) {.cdecl, importc: "cpShapeDestroy".}
 ## Destroy and Free a shape.
 
 proc destroy*(shape: Shape) {.destroy, cdecl, importc: "cpShapeFree".}
-proc destroy*(shape: CircleShape) {.destroy, cdecl, importc: "cpShapeFree".}
 proc destroy*(shape: PolyShape) {.destroy, cdecl, importc: "cpShapeFree".}
 proc destroy*(shape: SegmentShape) {.destroy, cdecl, importc: "cpShapeFree".}
+proc destroy*(shape: CircleShape) {.destroy, cdecl, importc: "cpShapeFree".}
 ## Update, cache and return the bounding box of a shape based on the body it's attached to.
 
 proc cacheBB*(shape: Shape): BB {.cdecl, importc: "cpShapeCacheBB".}
@@ -1425,16 +1396,16 @@ proc finalize*(constraint: Constraint) {.cdecl, importc: "cpConstraintDestroy".}
 ## Destroy and free a constraint.
 
 proc destroy*(constraint: Constraint) {.destroy, cdecl, importc: "cpConstraintFree".}
+proc destroy*(constraint: PinJoint) {.destroy, cdecl, importc: "cpConstraintFree".}
 proc destroy*(constraint: DampedSpring) {.destroy, cdecl, importc: "cpConstraintFree".}
+proc destroy*(constraint: RotaryLimitJoint) {.destroy, cdecl, importc: "cpConstraintFree".}
+proc destroy*(constraint: SlideJoint) {.destroy, cdecl, importc: "cpConstraintFree".}
+proc destroy*(constraint: GearJoint) {.destroy, cdecl, importc: "cpConstraintFree".}
+proc destroy*(constraint: DampedRotarySpring) {.destroy, cdecl, importc: "cpConstraintFree".}
 proc destroy*(constraint: GrooveJoint) {.destroy, cdecl, importc: "cpConstraintFree".}
+proc destroy*(constraint: RatchetJoint) {.destroy, cdecl, importc: "cpConstraintFree".}
 proc destroy*(constraint: SimpleMotor) {.destroy, cdecl, importc: "cpConstraintFree".}
 proc destroy*(constraint: PivotJoint) {.destroy, cdecl, importc: "cpConstraintFree".}
-proc destroy*(constraint: DampedRotarySpring) {.destroy, cdecl, importc: "cpConstraintFree".}
-proc destroy*(constraint: GearJoint) {.destroy, cdecl, importc: "cpConstraintFree".}
-proc destroy*(constraint: PinJoint) {.destroy, cdecl, importc: "cpConstraintFree".}
-proc destroy*(constraint: RotaryLimitJoint) {.destroy, cdecl, importc: "cpConstraintFree".}
-proc destroy*(constraint: RatchetJoint) {.destroy, cdecl, importc: "cpConstraintFree".}
-proc destroy*(constraint: SlideJoint) {.destroy, cdecl, importc: "cpConstraintFree".}
 ## Get the Space this constraint is added to.
 
 proc space*(constraint: Constraint): Space {.cdecl, importc: "cpConstraintGetSpace".}
@@ -2064,14 +2035,4 @@ proc closetPointOnSegment*(p: Vect; a: Vect; b: Vect): Vect {.inline, cdecl.} =
   var t: Float = fclamp01(vdot(delta, vsub(p, b)) div
       vlengthsq(delta))
   return vadd(b, vmult(delta, t))
-
-
-{.pop.}
-
-
-proc `*`*(v: Vect; s: Float): Vect = vmult(v, s)
-proc `+`*(v1, v2: Vect): Vect = vadd(v1, v2)
-proc `-`*(v1, v2: Vect): Vect = vsub(v1, v2)
-proc `==`*(v1, v2: Vect): bool = veql(v1, v2)
-proc `-`*(v: Vect): Vect = vneg(v)
 

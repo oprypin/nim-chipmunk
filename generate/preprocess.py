@@ -1,3 +1,6 @@
+# Copyright (C) 2015 Oleh Prypin <blaxpirit@gmail.com>
+# Licensed under terms of MIT license (see LICENSE)
+
 import sys
 import re
 
