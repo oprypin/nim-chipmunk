@@ -29,18 +29,47 @@ proc cp2sfml(v: Vect): Vector2f {.inline.} =
   result.x = v.x
   result.y = v.y
 
-let
-  ClBorder = 1
-  ClBall = (1 or 2)
-let
-  CtBorder = cast[CollisionType](1)
-  CtBall = cast[CollisionType](2)
+## Set the filters that are used to determine which objects collide and which ones don't: 
+## http://chipmunk-physics.net/release/ChipmunkLatest-Docs/#cpShape-Filtering
+const
+  cBorder = 0b0001.BitMask
+  cBall = 0b0010.BitMask
+  cBox = 0b0100.BitMask
+  cBlueBall = 0b1000.BitMask
 
-proc borderballz(a: Arbiter; space: Space; data: pointer): bool {.cdecl.} =
-  echo("Borderballz()")
+let
+  FilterBorder = chipmunk.ShapeFilter(
+    group: nil,
+    categories: cBorder,
+    mask: cBorder or cBall or cBox or cBlueBall
+  )
+  FilterBall = chipmunk.ShapeFilter(
+    group:nil,
+    categories: cBall,
+    mask: cBorder or cBall
+  )
+  FilterBox = chipmunk.ShapeFilter(
+    group:nil,
+    categories: cBox,
+    mask: cBorder or cBox or cBlueBall
+  )
+  FilterBlueBall = chipmunk.ShapeFilter(
+    group:nil,
+    categories: cBlueBall,
+    mask: cBorder or cBox or cBlueBall
+  )
+let
+  ctBorder = cast[CollisionType](1)
+  ctBall = cast[CollisionType](2)
+  ctBox = cast[CollisionType](3)
+  ctBlueBall = cast[CollisionType](4)
+
+proc ballCallback(a: Arbiter; space: Space; data: pointer): bool {.cdecl.} =
+  echo("Inside callback")
   result = true
-var handler = space.addCollisionHandler(CtBorder, CtBall)
-handler.postSolveFunc = cast[CollisionpostSolveFunc](borderballz)
+## Add collision callback only to the blue ball (when it hits the border)
+var handler = space.addCollisionHandler(ctBorder, ctBlueBall)
+handler.postSolveFunc = cast[CollisionpostSolveFunc](ballCallback)
 
 var borders: seq[Vect]
 borders = @[
@@ -59,8 +88,8 @@ for i in 0..3:
       )
     )
   sfBorders[i].position = borders[i].cp2sfml
-#  shape.layers = ClBorder
-  shape.collisionType = CtBorder
+  shape.filter = FilterBorder
+  shape.collisionType = ctBorder
 
 
 proc vectorToVec2f(a: Vect): Vector2f =
@@ -85,8 +114,8 @@ proc newBall(mass = 10.0, radius = 10.0): GameObjPtr =
   result.shape = space.addShape(
     newCircleShape(result.body, radius, vzero)
   )
-#  result.shape.setLayers(ClBall)
-  result.shape.collisionType = CtBall
+  result.shape.filter = FilterBall
+  result.shape.collisionType = ctBall
 
 proc newBox(mass = 10.0, width = 10.0, height = 10.0,
             position = Vect(x:30.0, y:10.0)): GameObjPtr =
@@ -95,11 +124,12 @@ proc newBox(mass = 10.0, width = 10.0, height = 10.0,
   result.rectangleSprite = newRectangleShape()
   result.rectangleSprite.size = Vector2f(x: width, y: height)
   result.rectangleSprite.origin = Vector2f(x: width/2, y: height/2)
+  result.rectangleSprite.fillColor = Yellow
   result.body = space.addBody(newBody(mass, momentForBox(mass, width, height)))
   result.body.position = position
   result.shape = space.addShape(newBoxShape(result.body, width, height, radius=0.0))
-#  result.shape.setLayers(ClBall)
-  result.shape.collisionType = CtBall
+  result.shape.filter = FilterBox
+  result.shape.collisionType = ctBox
 
 for i in 0..20:
     gameobjects.add(newBall(50.0, 30.0))
@@ -108,19 +138,14 @@ for i in 0..10:
 var ball = newBall(10.0, 15.0)
 ball.rectangleSprite = nil
 ball.circleSprite.fillColor = Blue
+ball.shape.filter = FilterBlueBall
+ball.shape.collisionType = ctBlueBall
 gameobjects.add(ball)
 
 var 
-  font = newFont("sansation.ttf")
-  text = newText()
   event: Event
   clock = newClock()
   oldPos: Vect
-text.characterSize = 18
-text.font = font
-text.strC = "Chipmunk2D TEST" 
-var text2 = text.copy()
-text2.position = text2.position + Vector2f(x:0.0, y:18.0)
 while window.open():
   while window.pollEvent(event):
     if event.kind == EventType.Closed:
@@ -128,7 +153,6 @@ while window.open():
       break
     elif event.kind == EventType.KeyPressed:
       if event.key.code == KeyCode.R:
-        text.strC = $ball.body.position
         oldPos = ball.body.position
         echo("oldPos = ", repr(ball.body.position))
       elif event.key.code == KeyCode.O:
@@ -148,8 +172,6 @@ while window.open():
         o.rectangleSprite.position = o.body.position.vectorToVec2f
         o.rectangleSprite.rotation = o.body.angle.radToDeg()
         window.draw(o.rectangleSprite)
-  window.draw(text)
-  window.draw(text2)
   window.draw(sfBorders)
   window.display()
 
