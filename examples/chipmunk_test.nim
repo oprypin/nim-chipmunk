@@ -74,9 +74,9 @@ handler.postSolveFunc = cast[CollisionpostSolveFunc](ballCallback)
 var borders: seq[Vect]
 borders = @[
   Vect(x:0.0, y:0.0),
-  Vect(x:500.0, y:0.0),
-  Vect(x:500.0, y:500.0),
-  Vect(x:0.0, y:500.0)]
+  Vect(x:Width, y:0.0),
+  Vect(x:Width, y:Height),
+  Vect(x:0.0, y:Height)]
 var sfBorders = newVertexArray(PrimitiveType.LinesStrip, 4)
 for i in 0..3:
   var shape = space.addShape(
@@ -87,7 +87,7 @@ for i in 0..3:
         1.0
       )
     )
-  sfBorders[i].position = borders[i].cp2sfml
+  sfBorders.getVertex(i).position = borders[i].cp2sfml
   shape.filter = FilterBorder
   shape.collisionType = ctBorder
 
@@ -101,7 +101,7 @@ proc floor(a: Vect): Vector2f =
   result.y = a.y.floor
 
 proc newBall(mass = 10.0, radius = 10.0): GameObjPtr =
-  let pos = Vect(x:20.0, y:30.0)
+  let pos = Vect(x:100.0, y:30.0)
   new(result)
   result.rectangleSprite = nil
   result.circleSprite = newCircleShape()
@@ -134,7 +134,7 @@ proc newBox(mass = 10.0, width = 10.0, height = 10.0,
 for i in 0..20:
     gameobjects.add(newBall(50.0, 30.0))
 for i in 0..10:
-    gameobjects.add(newBox(50.0, 30.0, 30.0, Vect(x:400.0, y:50.0+float(i))))
+    gameobjects.add(newBox(50.0, 30.0, 30.0, Vect(x:600.0, y:50.0+float(i))))
 var ball = newBall(10.0, 15.0)
 ball.rectangleSprite = nil
 ball.circleSprite.fillColor = Blue
