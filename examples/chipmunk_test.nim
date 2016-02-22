@@ -14,20 +14,28 @@ type
     body: chipmunk.Body
     shape: chipmunk.Shape
 
+## Helper functions
+proc cp2sfml(v: Vect): Vector2f {.inline.} =
+  result.x = v.x
+  result.y = v.y
+
+proc vectorToVec2f(a: Vect): Vector2f =
+  result.x = a.x
+  result.y = a.y
+
+## Global variables
 var 
   window = newRenderWindow(
     videoMode(Width, Height, 32), "Chipmunk Test", WindowStyle.Default
   )
   space = newSpace()
   gameobjects: seq[GameObjPtr] = @[]
+  event: Event
+  oldPos: Vect
 
 window.framerateLimit = 60
 space.gravity = Vect(x:8.9, y:82.3)
 randomize()
-
-proc cp2sfml(v: Vect): Vector2f {.inline.} =
-  result.x = v.x
-  result.y = v.y
 
 ## Set the filters that are used to determine which objects collide and which ones don't: 
 ## http://chipmunk-physics.net/release/ChipmunkLatest-Docs/#cpShape-Filtering
@@ -58,12 +66,14 @@ let
     categories: cBlueBall,
     mask: cBorder or cBox or cBlueBall
   )
+## Predefined CollisionType single assignment variables
 let
   ctBorder = cast[CollisionType](1)
   ctBall = cast[CollisionType](2)
   ctBox = cast[CollisionType](3)
   ctBlueBall = cast[CollisionType](4)
 
+## Collision callback definition
 proc ballCallback(a: Arbiter; space: Space; data: pointer): bool {.cdecl.} =
   echo("Inside callback")
   result = true
@@ -71,6 +81,7 @@ proc ballCallback(a: Arbiter; space: Space; data: pointer): bool {.cdecl.} =
 var handler = space.addCollisionHandler(ctBorder, ctBlueBall)
 handler.postSolveFunc = cast[CollisionpostSolveFunc](ballCallback)
 
+## Add the borders
 var borders: seq[Vect]
 borders = @[
   Vect(x:0.0, y:0.0),
@@ -91,15 +102,7 @@ for i in 0..3:
   shape.filter = FilterBorder
   shape.collisionType = ctBorder
 
-
-proc vectorToVec2f(a: Vect): Vector2f =
-  result.x = a.x
-  result.y = a.y
-
-proc floor(a: Vect): Vector2f =
-  result.x = a.x.floor
-  result.y = a.y.floor
-
+## Helper functions for creating shapes
 proc newBall(mass = 10.0, radius = 10.0): GameObjPtr =
   let pos = Vect(x:100.0, y:30.0)
   new(result)
@@ -131,6 +134,7 @@ proc newBox(mass = 10.0, width = 10.0, height = 10.0,
   result.shape.filter = FilterBox
   result.shape.collisionType = ctBox
 
+## Add the shapes to the space
 for i in 0..20:
     gameobjects.add(newBall(50.0, 30.0))
 for i in 0..10:
@@ -142,10 +146,8 @@ ball.shape.filter = FilterBlueBall
 ball.shape.collisionType = ctBlueBall
 gameobjects.add(ball)
 
-var 
-  event: Event
-  clock = newClock()
-  oldPos: Vect
+
+## The main loop
 while window.open():
   while window.pollEvent(event):
     if event.kind == EventType.Closed:
