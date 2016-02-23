@@ -14,7 +14,7 @@ type
     body: chipmunk.Body
     shape: chipmunk.Shape
 
-## Helper functions
+## Helper procedures
 proc cp2sfml(v: Vect): Vector2f {.inline.} =
   result.x = v.x
   result.y = v.y
@@ -102,7 +102,7 @@ for i in 0..3:
   shape.filter = FilterBorder
   shape.collisionType = ctBorder
 
-## Helper functions for creating shapes
+## Helper procedures for creating shapes
 proc newBall(mass = 10.0, radius = 10.0): GameObjPtr =
   let pos = Vect(x:100.0, y:30.0)
   new(result)
@@ -134,6 +134,7 @@ proc newBox(mass = 10.0, width = 10.0, height = 10.0,
   result.shape.filter = FilterBox
   result.shape.collisionType = ctBox
 
+
 ## Add the shapes to the space
 for i in 0..20:
     gameobjects.add(newBall(50.0, 30.0))
@@ -146,8 +147,7 @@ ball.shape.filter = FilterBlueBall
 ball.shape.collisionType = ctBlueBall
 gameobjects.add(ball)
 
-
-## The main loop
+## Main loop
 while window.open():
   while window.pollEvent(event):
     if event.kind == EventType.Closed:
@@ -177,6 +177,7 @@ while window.open():
   window.draw(sfBorders)
   window.display()
 
+## Cleanup on exit
 for o in gameobjects:
   o.body.destroy()
   if o.rectangleSprite == nil:

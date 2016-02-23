@@ -4,6 +4,12 @@ import
   csfml, 
   math
 
+when not defined(csfmlNoDestructors) or not defined(chipmunkNoDestructors):
+    const errorMessage = "This example has to be compiled with the following flags: " &
+                         "chipmunkNoDestructors, csfmlNoDestructors"
+    {.fatal: errorMessage.} 
+
+## Math's randomize
 randomize()
 
 const
@@ -13,6 +19,7 @@ const
   ScreenW = 640
   ScreenH = 480
 
+## Global variables
 var 
   space = newSpace()
   window = newRenderWindow(
@@ -21,7 +28,11 @@ var
   screenArea = IntRect(left: 20, top: 20, width: ScreenW-20, height: ScreenH-20)
   circleObjects: seq[chipmunk.Shape] = newSeq[chipmunk.Shape]()
   segmentObjects: seq[chipmunk.Shape] = newSeq[chipmunk.Shape]()
+  running = true
+  event: Event
+  clock = newClock()
 
+## Helper procedures
 proc floor(vec: Vect): Vector2f =
   result.x = vec.x.floor
   result.y = vec.y.floor
@@ -49,18 +60,6 @@ proc drawCircle(win: RenderWindow, shape: chipmunk.Shape) =
 proc drawSegment(win: RenderWindow, shape: chipmunk.Shape) =
     win.draw(cast[csfml.VertexArray](shape.userData))
 
-proc gravityApplicator(arb: Arbiter; space: Space; data: pointer): bool {.cdecl.} =
-  var
-    bodyA: Body
-    bodyB: Body
-    dist: Vect
-  arb.bodies(addr(bodyA), addr(bodyB))
-  dist = bodyA.position - bodyB.position
-  bodyB.applyForceAtWorldPoint(
-    dist * (1.0 / dist.vnormalize.vlength * gravityStrength),
-    vzero
-  )
-
 proc randomPoint(rect: var IntRect): Vect =
   result.x = (random(rect.width) + rect.left).Float
   result.y = (random(rect.height) + rect.top).Float
@@ -84,14 +83,30 @@ proc addPlanet() =
   circleObjects.add(shape)
   circleObjects.add(gravity)
 
+## Presolver callback procedure 
+## (Pre-Solve > collision happend, but has not been resolved yet)
+## https://chipmunk-physics.net/release/Chipmunk-7.x/Chipmunk-7.0.1-Docs/#CollisionCallbacks
+proc gravityApplicator(arb: Arbiter; space: Space; data: pointer): bool {.cdecl.} =
+  var
+    bodyA: Body
+    bodyB: Body
+    dist: Vect
+  arb.bodies(addr(bodyA), addr(bodyB))
+  dist = bodyA.position - bodyB.position
+  bodyB.applyForceAtWorldPoint(
+    dist * (1.0 / dist.vnormalize.vlength * gravityStrength),
+    vzero
+  )
 
-# Startup initialization
+
+## Startup initialization
 window.frameRateLimit = 60
 space.iterations = 20
+## Add the collision callback to the presolver
 var handler = space.addCollisionHandler(CTgravity, CTplanet)
 handler.preSolveFunc = cast[CollisionPreSolveFunc](gravityApplicator)
 
-# Add the planets and the borders
+## Add the planets and the borders
 block:
   let borders = [Vect(x:0, y:0), Vect(x:0, y:ScreenH),
                  Vect(x:ScreenW, y:ScreenH), Vect(x:ScreenW, y:0)]
@@ -109,11 +124,7 @@ block:
   for i in 0..29:
     addPlanet()
 
-
-var
-  running = true
-  event: Event
-  clock = newClock()
+## Main loop
 while running:
   while window.pollEvent(event):
     if event.kind == EventType.Closed:
@@ -134,5 +145,6 @@ while running:
     window.drawSegment(obj)
   window.display()
 
+## Cleanup
 space.destroy()
 
