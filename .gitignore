@@ -4,7 +4,8 @@
 !README*
 !*.md
 !LICENSE
-!/*.nimble
+!*.nimble
+!*nim.cfg
 !/src
 !/src/*.nim
 !/examples

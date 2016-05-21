@@ -1,13 +1,7 @@
-
-import 
-  chipmunk, 
-  csfml, 
+import
+  chipmunk,
+  csfml,
   math
-
-when not defined(csfmlNoDestructors) or not defined(chipmunkNoDestructors):
-    const errorMessage = "This example has to be compiled with the following flags: " &
-                         "chipmunkNoDestructors, csfmlNoDestructors"
-    {.fatal: errorMessage.} 
 
 ## Math's randomize
 randomize()
