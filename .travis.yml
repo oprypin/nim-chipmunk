@@ -1,0 +1,57 @@
+language: c
+install:
+  - |
+    if [ ! -x nim-master/bin/nim ]; then
+      git clone -b master --depth 1 git://github.com/nim-lang/nim nim-master/
+      cd nim-master
+      git clone -b master --depth 1 git://github.com/nim-lang/csources csources/
+      cd csources
+      sh build.sh
+      cd ..
+      rm -rf csources
+      bin/nim c koch
+      ./koch boot -d:release
+    else
+      cd nim-master
+      git fetch origin
+      if ! git merge FETCH_HEAD | grep "Already up-to-date"; then
+        bin/nim c koch
+        ./koch boot -d:release
+      fi
+    fi
+    cd ..
+cache:
+  directories:
+    - nim-master
+before_script:
+  - export PATH="nim-master/bin${PATH:+:$PATH}"
+
+script:
+  - nim doc src/chipmunk.nim
+after_success:
+  - |
+    if [ "$TRAVIS_BRANCH" = master ] && [ "$TRAVIS_PULL_REQUEST" != true ]; then
+      rev="$(git rev-parse --short HEAD)"
+
+      git clone "https://$GH_TOKEN@github.com/$TRAVIS_REPO_SLUG" -b gh-pages gh-pages/
+      cd gh-pages
+
+      mv ../src/chipmunk.html index.html
+
+      git config user.name 'Robot'
+      git config user.email '<>'
+
+      git add -A
+
+      # See if there are any changes not related to generation time
+      git diff --staged "index.html" | tail -n +5 | grep -E '^[+\-]' |
+      grep -vE "Made with Nim. Generated" >/dev/null
+
+      if [ $? == 0 ]; then
+        git commit -m "Generate documentation ($rev)"
+        git push origin gh-pages >/dev/null 2>&1
+      fi
+    fi
+env:
+  global:
+    - secure: "GND93QsHdGUOJsMUl1k39N9olHYA4t79pSyy/wP14NCOaQXkt0dx1ZuYFJ+MYoGSAvfgzTAo6miP5a3az7cWig89vESvZgxmX+gmJm0HkUA2nabeKOHtw3u97Zxdar5dm5zXkISYrv7/VthtkWtWdWjMzF+7d26OykHsMKCjV+0="

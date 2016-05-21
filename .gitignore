@@ -10,3 +10,4 @@
 !/src/*.nim
 !/examples
 !/examples/*.nim
+!/.travis.yml
