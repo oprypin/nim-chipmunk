@@ -519,7 +519,7 @@ proc vslerp*(v1: Vect; v2: Vect; t: Float): Vect {.inline, cdecl.} =
   #"cpvslerp"
   var dot: Float = vdot(vnormalize(v1), vnormalize(v2))
   var omega: Float = arccos(fclamp(dot, - 1.0, 1.0))
-  if omega < 1 - 3:
+  if omega < 1e-3:
     return vlerp(v1, v2, t)
   else:
     var denom: Float = 1.0 div sin(omega)
