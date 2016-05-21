@@ -7,10 +7,5 @@
 !/*.nimble
 !/src
 !/src/*.nim
-!/src/private
-!/src/private/*.nim
-!/generate
-!/generate/*.py
-!/generate/*.sh
 !/examples
 !/examples/*.nim
