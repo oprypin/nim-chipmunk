@@ -4,12 +4,13 @@
 {.deadCodeElim: on.}
 {.warning[SmallLshouldNotBeUsed]: off.}
 
-when defined chipmunkNoDestructors:
-  {.pragma: destroy.}
-  {.hint: "Chipmunk: no destructors; call destroy() manually, beware of memory leaks!".}
-else:
+when defined chipmunkDestructors:
+  # Destroy is called automatically, based on scope
   {.experimental.}
   {.pragma: destroy, override.}
+else:
+  # Call destroy() manually, beware of memory leaks!
+  {.pragma: destroy.}
 
 {.passL: "-lpthread".}
 when defined(windows):
