@@ -1991,3 +1991,8 @@ proc `+`*(v1, v2: Vect): Vect = vadd(v1, v2)
 proc `-`*(v1, v2: Vect): Vect = vsub(v1, v2)
 proc `==`*(v1, v2: Vect): bool = veql(v1, v2)
 proc `-`*(v: Vect): Vect = vneg(v)
+
+
+proc `|`*(a, b: SpaceDebugDrawFlags): SpaceDebugDrawFlags =
+  ## Combines multiple flags as a bitmask
+  cast[SpaceDebugDrawFlags](cint(a) or cint(b))
