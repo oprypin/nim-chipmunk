@@ -57,12 +57,12 @@ type
   Timestamp* = cuint
     ## Type used for various timestamps in Chipmunk.
 
-  Vect* = object
+  Vect* {.bycopy.} = object
     ## Chipmunk's 2D vector type.
     x*: Float
     y*: Float
 
-  Transform* = object
+  Transform* {.bycopy.} = object
     ## Column major affine transform.
     a*: Float
     b*: Float
@@ -71,7 +71,7 @@ type
     tx*: Float
     ty*: Float
 
-  Mat2x2* = object
+  Mat2x2* {.bycopy.} = object
     a*: Float
     b*: Float
     c*: Float
@@ -180,7 +180,7 @@ type
 
   SpatialIndexSegmentQueryImpl* = proc (index: SpatialIndex; obj: pointer; a: Vect; b: Vect; t_exit: Float; `func`: SpatialIndexSegmentQueryFunc; data: pointer) {.cdecl.}
 
-  SpatialIndexClass* = object
+  SpatialIndexClass* {.bycopy.} = object
     destroy*: SpatialIndexDestroyImpl
     count*: SpatialIndexCountImpl
     each*: SpatialIndexEachImpl
@@ -193,7 +193,7 @@ type
     query*: SpatialIndexQueryImpl
     segmentQuery*: SpatialIndexSegmentQueryImpl
 
-  ContactPoint* = object
+  ContactPoint* {.bycopy.} = object
     ## Used in ContactPointSet
     pointA*: Vect
     pointB*: Vect
@@ -203,7 +203,7 @@ type
       ## This value is calculated as cpvdot(cpvsub(point2, point1), normal) and is ignored by cpArbiterSetContactPointSet().
 
 
-  ContactPointSet* = object
+  ContactPointSet* {.bycopy.} = object
     ## A struct that wraps up the important collision data for an arbiter.
     count*: cint
       ## The number of contact points in the set.
@@ -241,7 +241,7 @@ type
   BodyArbiterIteratorFunc* = proc (body: Body; arbiter: Arbiter; data: pointer) {.cdecl.}
     ## Body/arbiter iterator callback function type.
 
-  PointQueryInfo* = object
+  PointQueryInfo* {.bycopy.} = object
     ## Point query info struct.
     shape*: Shape
       ## The nearest shape, NULL if no shape was within range.
@@ -253,7 +253,7 @@ type
       ## The gradient of the signed distance function.
       ## The value should be similar to info.p/info.d, but accurate even for very small values of info.d.
 
-  SegmentQueryInfo* = object
+  SegmentQueryInfo* {.bycopy.} = object
     ## Segment query info struct.
     shape*: Shape
       ## The shape that was hit, or NULL if no collision occured.
@@ -264,7 +264,7 @@ type
     alpha*: Float
       ## The normalized distance along the query segment in the range [0, 1].
 
-  ShapeFilter* = object
+  ShapeFilter* {.bycopy.} = object
     ## Fast collision filtering type that is used to determine if two objects collide before calling collision or query callbacks.
     group*: Group
       ## Two objects with the same non-zero group value do not collide.
@@ -306,7 +306,7 @@ type
   CollisionSeparateFunc* = proc (arb: Arbiter; space: Space; userData: DataPointer) {.cdecl.}
     ## Collision separate event function callback type.
 
-  CollisionHandler* = object
+  CollisionHandler* {.bycopy.} = object
     ## Struct that holds function callback pointers to configure custom collision handling.
     ## Collision handlers have a pair of types; when a collision occurs between two shapes that have these types, the collision handler functions are triggered.
     typeA*: CollisionType
@@ -352,7 +352,7 @@ type
   SpaceConstraintIteratorFunc* = proc (constraint: Constraint; data: pointer) {.cdecl.}
     ## Space/constraint iterator callback function type.
 
-  SpaceDebugColor* = object
+  SpaceDebugColor* {.bycopy.} = object
     ## Color type to use with the space debug drawing API.
     r*: cfloat
     g*: cfloat
@@ -382,7 +382,7 @@ type
     SPACE_DEBUG_DRAW_CONSTRAINTS = 1 shl 1,
     SPACE_DEBUG_DRAW_COLLISION_POINTS = 1 shl 2
 
-  SpaceDebugDrawOptions* = object
+  SpaceDebugDrawOptions* {.bycopy.} = object
     ## Struct used with cpSpaceDebugDraw() containing drawing callbacks and other drawing settings.
     drawCircle*: SpaceDebugDrawCircleImpl
       ## Function that will be invoked to draw circles.
