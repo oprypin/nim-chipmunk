@@ -2440,7 +2440,7 @@ Type used for cpShapeFilter category and mask.
 Type used for various timestamps in Chipmunk.
 
 </dd>
-<dt id="Vect"><a name="Vect"></a><pre><span class="Identifier">Vect</span><span class="Operator">*</span> <span class="Other">=</span> <span class="Keyword">object</span>
+<dt id="Vect"><a name="Vect"></a><pre><span class="Identifier">Vect</span><span class="Operator">*</span> <span class="Other">{.</span><span class="Identifier">bycopy</span><span class="Other">.}</span> <span class="Other">=</span> <span class="Keyword">object</span>
   <span class="Identifier">x</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">Float</span>
   <span class="Identifier">y</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">Float</span>
 </pre></dt>
@@ -2448,7 +2448,7 @@ Type used for various timestamps in Chipmunk.
 Chipmunk's 2D vector type.
 
 </dd>
-<dt id="Transform"><a name="Transform"></a><pre><span class="Identifier">Transform</span><span class="Operator">*</span> <span class="Other">=</span> <span class="Keyword">object</span>
+<dt id="Transform"><a name="Transform"></a><pre><span class="Identifier">Transform</span><span class="Operator">*</span> <span class="Other">{.</span><span class="Identifier">bycopy</span><span class="Other">.}</span> <span class="Other">=</span> <span class="Keyword">object</span>
   <span class="Identifier">a</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">Float</span>
   <span class="Identifier">b</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">Float</span>
   <span class="Identifier">c</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">Float</span>
@@ -2460,7 +2460,7 @@ Chipmunk's 2D vector type.
 Column major affine transform.
 
 </dd>
-<dt id="Mat2x2"><a name="Mat2x2"></a><pre><span class="Identifier">Mat2x2</span><span class="Operator">*</span> <span class="Other">=</span> <span class="Keyword">object</span>
+<dt id="Mat2x2"><a name="Mat2x2"></a><pre><span class="Identifier">Mat2x2</span><span class="Operator">*</span> <span class="Other">{.</span><span class="Identifier">bycopy</span><span class="Other">.}</span> <span class="Other">=</span> <span class="Keyword">object</span>
   <span class="Identifier">a</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">Float</span>
   <span class="Identifier">b</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">Float</span>
   <span class="Identifier">c</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">Float</span>
@@ -2693,7 +2693,7 @@ Bounding box tree velocity callback function. This function should return an est
 
 
 </dd>
-<dt id="SpatialIndexClass"><a name="SpatialIndexClass"></a><pre><span class="Identifier">SpatialIndexClass</span><span class="Operator">*</span> <span class="Other">=</span> <span class="Keyword">object</span>
+<dt id="SpatialIndexClass"><a name="SpatialIndexClass"></a><pre><span class="Identifier">SpatialIndexClass</span><span class="Operator">*</span> <span class="Other">{.</span><span class="Identifier">bycopy</span><span class="Other">.}</span> <span class="Other">=</span> <span class="Keyword">object</span>
   <span class="Identifier">destroy</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">SpatialIndexDestroyImpl</span>
   <span class="Identifier">count</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">SpatialIndexCountImpl</span>
   <span class="Identifier">each</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">SpatialIndexEachImpl</span>
@@ -2710,7 +2710,7 @@ Bounding box tree velocity callback function. This function should return an est
 
 
 </dd>
-<dt id="ContactPoint"><a name="ContactPoint"></a><pre><span class="Identifier">ContactPoint</span><span class="Operator">*</span> <span class="Other">=</span> <span class="Keyword">object</span>
+<dt id="ContactPoint"><a name="ContactPoint"></a><pre><span class="Identifier">ContactPoint</span><span class="Operator">*</span> <span class="Other">{.</span><span class="Identifier">bycopy</span><span class="Other">.}</span> <span class="Other">=</span> <span class="Keyword">object</span>
   <span class="Identifier">pointA</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">Vect</span>
   <span class="Identifier">pointB</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">Vect</span>                <span class="Comment">## The position of the contact on the surface of each shape.</span>
   <span class="Identifier">distance</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">Float</span> <span class="Comment">## Penetration distance of the two shapes. Overlapping means it will be negative.</span>
@@ -2720,7 +2720,7 @@ Bounding box tree velocity callback function. This function should return an est
 Used in ContactPointSet
 
 </dd>
-<dt id="ContactPointSet"><a name="ContactPointSet"></a><pre><span class="Identifier">ContactPointSet</span><span class="Operator">*</span> <span class="Other">=</span> <span class="Keyword">object</span>
+<dt id="ContactPointSet"><a name="ContactPointSet"></a><pre><span class="Identifier">ContactPointSet</span><span class="Operator">*</span> <span class="Other">{.</span><span class="Identifier">bycopy</span><span class="Other">.}</span> <span class="Other">=</span> <span class="Keyword">object</span>
   <span class="Identifier">count</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">cint</span>                 <span class="Comment">## The number of contact points in the set.</span>
   <span class="Identifier">normal</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">Vect</span>                <span class="Comment">## The normal of the collision.</span>
   <span class="Identifier">points</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">array</span><span class="Other">[</span><span class="DecNumber">2</span><span class="Other">,</span> <span class="Identifier">ContactPoint</span><span class="Other">]</span> <span class="Comment">## The array of contact points.</span>
@@ -2769,7 +2769,7 @@ Body/constraint iterator callback function type.
 Body/arbiter iterator callback function type.
 
 </dd>
-<dt id="PointQueryInfo"><a name="PointQueryInfo"></a><pre><span class="Identifier">PointQueryInfo</span><span class="Operator">*</span> <span class="Other">=</span> <span class="Keyword">object</span>
+<dt id="PointQueryInfo"><a name="PointQueryInfo"></a><pre><span class="Identifier">PointQueryInfo</span><span class="Operator">*</span> <span class="Other">{.</span><span class="Identifier">bycopy</span><span class="Other">.}</span> <span class="Other">=</span> <span class="Keyword">object</span>
   <span class="Identifier">shape</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">Shape</span>                <span class="Comment">## The nearest shape, NULL if no shape was within range.</span>
   <span class="Identifier">point</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">Vect</span>                 <span class="Comment">## The closest point on the shape's surface. (in world space coordinates)</span>
   <span class="Identifier">distance</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">Float</span>             <span class="Comment">## The distance to the point. The distance is negative if the point is inside the shape.</span>
@@ -2780,7 +2780,7 @@ Body/arbiter iterator callback function type.
 Point query info struct.
 
 </dd>
-<dt id="SegmentQueryInfo"><a name="SegmentQueryInfo"></a><pre><span class="Identifier">SegmentQueryInfo</span><span class="Operator">*</span> <span class="Other">=</span> <span class="Keyword">object</span>
+<dt id="SegmentQueryInfo"><a name="SegmentQueryInfo"></a><pre><span class="Identifier">SegmentQueryInfo</span><span class="Operator">*</span> <span class="Other">{.</span><span class="Identifier">bycopy</span><span class="Other">.}</span> <span class="Other">=</span> <span class="Keyword">object</span>
   <span class="Identifier">shape</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">Shape</span>                <span class="Comment">## The shape that was hit, or NULL if no collision occured.</span>
   <span class="Identifier">point</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">Vect</span>                 <span class="Comment">## The point of impact.</span>
   <span class="Identifier">normal</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">Vect</span>                <span class="Comment">## The normal of the surface hit.</span>
@@ -2790,7 +2790,7 @@ Point query info struct.
 Segment query info struct.
 
 </dd>
-<dt id="ShapeFilter"><a name="ShapeFilter"></a><pre><span class="Identifier">ShapeFilter</span><span class="Operator">*</span> <span class="Other">=</span> <span class="Keyword">object</span>
+<dt id="ShapeFilter"><a name="ShapeFilter"></a><pre><span class="Identifier">ShapeFilter</span><span class="Operator">*</span> <span class="Other">{.</span><span class="Identifier">bycopy</span><span class="Other">.}</span> <span class="Other">=</span> <span class="Keyword">object</span>
   <span class="Identifier">group</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">Group</span> <span class="Comment">## Two objects with the same non-zero group value do not collide.</span>
               <span class="Comment">## This is generally used to group objects in a composite object together to disable self collisions.</span>
   <span class="Identifier">categories</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">Bitmask</span> <span class="Comment">## A bitmask of user definable categories that this object belongs to.</span>
@@ -2852,7 +2852,7 @@ Collision post-solve event function callback type.
 Collision separate event function callback type.
 
 </dd>
-<dt id="CollisionHandler"><a name="CollisionHandler"></a><pre><span class="Identifier">CollisionHandler</span><span class="Operator">*</span> <span class="Other">=</span> <span class="Keyword">object</span>
+<dt id="CollisionHandler"><a name="CollisionHandler"></a><pre><span class="Identifier">CollisionHandler</span><span class="Operator">*</span> <span class="Other">{.</span><span class="Identifier">bycopy</span><span class="Other">.}</span> <span class="Other">=</span> <span class="Keyword">object</span>
   <span class="Identifier">typeA</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">CollisionType</span> <span class="Comment">## Collision type identifier of the first shape that this handler recognizes.</span>
                       <span class="Comment">## In the collision handler callback, the shape with this type will be the first argument. Read only.</span>
   <span class="Identifier">typeB</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">CollisionType</span> <span class="Comment">## Collision type identifier of the second shape that this handler recognizes.</span>
@@ -2912,7 +2912,7 @@ Space/body iterator callback function type.
 Space/constraint iterator callback function type.
 
 </dd>
-<dt id="SpaceDebugColor"><a name="SpaceDebugColor"></a><pre><span class="Identifier">SpaceDebugColor</span><span class="Operator">*</span> <span class="Other">=</span> <span class="Keyword">object</span>
+<dt id="SpaceDebugColor"><a name="SpaceDebugColor"></a><pre><span class="Identifier">SpaceDebugColor</span><span class="Operator">*</span> <span class="Other">{.</span><span class="Identifier">bycopy</span><span class="Other">.}</span> <span class="Other">=</span> <span class="Keyword">object</span>
   <span class="Identifier">r</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">cfloat</span>
   <span class="Identifier">g</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">cfloat</span>
   <span class="Identifier">b</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">cfloat</span>
@@ -2971,7 +2971,7 @@ Callback type for a function that returns a color for a given shape. This gives 
 
 
 </dd>
-<dt id="SpaceDebugDrawOptions"><a name="SpaceDebugDrawOptions"></a><pre><span class="Identifier">SpaceDebugDrawOptions</span><span class="Operator">*</span> <span class="Other">=</span> <span class="Keyword">object</span>
+<dt id="SpaceDebugDrawOptions"><a name="SpaceDebugDrawOptions"></a><pre><span class="Identifier">SpaceDebugDrawOptions</span><span class="Operator">*</span> <span class="Other">{.</span><span class="Identifier">bycopy</span><span class="Other">.}</span> <span class="Other">=</span> <span class="Keyword">object</span>
   <span class="Identifier">drawCircle</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">SpaceDebugDrawCircleImpl</span> <span class="Comment">## Function that will be invoked to draw circles.</span>
   <span class="Identifier">drawSegment</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">SpaceDebugDrawSegmentImpl</span> <span class="Comment">## Function that will be invoked to draw line segments.</span>
   <span class="Identifier">drawFatSegment</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">SpaceDebugDrawFatSegmentImpl</span> <span class="Comment">## Function that will be invoked to draw thick line segments.</span>
@@ -5496,7 +5496,7 @@ Combines multiple flags as a bitmask
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br/>
-        <small>Made with Nim. Generated: 2016-05-31 09:34:00 UTC</small>
+        <small>Made with Nim. Generated: 2016-05-31 09:37:12 UTC</small>
       </div>
     </div>
   </div>
