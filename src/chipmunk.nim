@@ -119,7 +119,7 @@ type
 
   Space* = ptr object
 
-  BB* = object
+  BB* {.bycopy.} = object
     ## Chipmunk's axis-aligned 2D bounding box type. (left, bottom, right, top)
     l*: Float
     b*: Float
