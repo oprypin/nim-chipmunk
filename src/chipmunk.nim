@@ -15,7 +15,7 @@ else:
 {.passL: "-lpthread".}
 when defined(windows):
   const lib = "chipmunk.dll"
-elif defined(mac):
+elif defined(macosx):
   const lib = "libchipmunk.dylib"
 else:
   const lib = "libchipmunk.so"
