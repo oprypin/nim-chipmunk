@@ -1,7 +1,8 @@
 import
   chipmunk,
   csfml,
-  math
+  math,
+  random
 
 ## Math's randomize
 randomize()
@@ -14,7 +15,7 @@ const
   ScreenH = 480
 
 ## Global variables
-var 
+var
   space = newSpace()
   window = newRenderWindow(
     videoMode(ScreenW, ScreenH, 32), "Planets demo", WindowStyle.Default
@@ -35,13 +36,13 @@ proc cp2sfml(vec: Vect): Vector2f =
   result.x = vec.x
   result.y = vec.y
 
-proc initCircleShape(space: Space; shape: chipmunk.Shape; 
+proc initCircleShape(space: Space; shape: chipmunk.Shape;
                      userData: pointer = nil): chipmunk.Shape {.discardable.} =
   result = space.addShape(shape)
   shape.userData = csfml.newCircleShape(cast[chipmunk.CircleShape](shape).radius, 30)
   let circleData = cast[csfml.CircleShape](shape.userData)
   circleData.origin = Vector2f(
-    x:cast[chipmunk.CircleShape](shape).radius, 
+    x:cast[chipmunk.CircleShape](shape).radius,
     y:cast[chipmunk.CircleShape](shape).radius
   )
   circleData.fillColor = Green
@@ -77,7 +78,7 @@ proc addPlanet() =
   circleObjects.add(shape)
   circleObjects.add(gravity)
 
-## Presolver callback procedure 
+## Presolver callback procedure
 ## (Pre-Solve > collision happend, but has not been resolved yet)
 ## https://chipmunk-physics.net/release/Chipmunk-7.x/Chipmunk-7.0.1-Docs/#CollisionCallbacks
 proc gravityApplicator(arb: Arbiter; space: Space; data: pointer): bool {.cdecl.} =
@@ -128,9 +129,9 @@ while running:
       if event.key.code == KeyCode.Escape:
         running = false
         break
-        
+
   let dt = clock.restart.asSeconds / 100
-  
+
   space.step(dt)
   window.clear(Black)
   for obj in circleObjects:
@@ -141,4 +142,3 @@ while running:
 
 ## Cleanup
 space.destroy()
-
