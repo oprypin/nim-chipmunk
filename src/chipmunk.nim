@@ -425,6 +425,11 @@ proc fabs*(f: Float): Float {.inline, cdecl.} =
   ## Return the absolute value of a cpFloat.
   return if (f < 0): - f else: f
 
+proc fmod*(x, y: float): float {.inline, cdecl.} =
+  ## Calculate the modulus (remainder) of x divided by y.
+  let quotient = floor(x / y)
+  result = x - quotient * y
+
 
 proc fclamp*(f: Float; min: Float; max: Float): Float {.inline, cdecl.} =
   ## Clamp `f` to be between `min` and `max`.
